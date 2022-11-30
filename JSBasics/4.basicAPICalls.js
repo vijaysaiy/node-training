@@ -1,8 +1,10 @@
 import axios from "axios";
 
 const getData = async () => {
+  // Q1: Print user firstname
   //   const response = await axios.get("https:randomuser.me/api");
   //   console.log(response.data.results[0].name.first);
+  // Q2: Print 5 user's firstname
   const response = await axios.get("https:randomuser.me/api?results=5");
   //   response.data.results.forEach((user) => console.log(user.name.first)); // prints multiple lines
   //   const users = response.data.results.map((user) => user.name.first);

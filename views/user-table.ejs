@@ -1,0 +1,26 @@
+<table border='1'>
+       <tr>
+            <td>Photo</td>
+            <td>First Name</td>
+            <td>Gender</td>
+            <td>Age</td>
+        </tr>
+   
+    <% for(const user of users){ %>
+        <tr>
+            <td><img src=<%= user.picture.thumbnail %> /></td>
+            <td><%= user.name.first %></td>
+            <td><%= user.gender %></td>
+            <td> <%= user.dob.age %></td>
+        </tr>
+    <% } %>
+
+    <tr>
+        <td></td>
+        <td>Average age</td>
+        <td></td>
+        <td><%= avgAge %></td>
+        
+    </tr>
+
+</table>
