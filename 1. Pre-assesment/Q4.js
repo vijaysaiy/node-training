@@ -110,18 +110,15 @@ const calcToAmount = (arr) => {
 const getFinalAmount = (fromAmounts, toAmounts) => {
   calcFromAmount(transactions);
   calcToAmount(transactions);
-  console.log(fromAmounts);
-  console.log(toAmounts);
-  const usersWithFinalBalance = {};
   // finalbalance  = earnings - expenses
   // earning are in toAmounts Obj,
   // expenses are in fromAmount obj
-  Object.keys(fromAmounts).forEach((key) => {
+  Object.keys(fromAmounts).forEach((key,index) => {
     if (toAmounts.hasOwnProperty(key)) {
-      usersWithFinalBalance[key] = toAmounts[key] - fromAmounts[key];
+      customers[index].Balance = toAmounts[key] - fromAmounts[key];
     }
   });
-  return usersWithFinalBalance;
+  return customers;
 };
 
 console.log(getFinalAmount(fromAmounts, toAmounts));

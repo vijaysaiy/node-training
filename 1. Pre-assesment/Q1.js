@@ -29,15 +29,15 @@ const customers = [
   },
 ];
 
-const unique = new Set();
-
+const unique = new Map();
 const findDuplicate = (arr) => {
   for (let i = 0; i < arr.length; i++) {
-    if (unique.has(arr[i].Name)) {
-      return arr[i];
+    if (unique.get(arr[i].Name)) {
+      return console.log("Duplicate Found", unique.get(arr[i].Name));
     }
-    unique.add(arr[i].Name);
+    unique.set(arr[i].Name, arr[i]);
   }
+  return console.log("No Duplicates");
 };
 
-console.log("Duplicate found", findDuplicate(customers));
+findDuplicate(customers);
