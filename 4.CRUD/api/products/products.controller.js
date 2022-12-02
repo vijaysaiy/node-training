@@ -1,3 +1,4 @@
+import { logger } from "../utils/logger/logger.js";
 import * as productsService from "./products.service.js";
 
 export const findById = async (req, res) => {
@@ -6,7 +7,8 @@ export const findById = async (req, res) => {
 };
 
 export const find = async (req, res) => {
-  const products = await productsService.find();
+  const { sortBy, sortDirection = "asc" } = req.query;
+  const products = await productsService.find(sortBy, sortDirection);
   res.json({ status: "success", data: products });
 };
 
@@ -29,4 +31,14 @@ export const deleteById = async (req, res) => {
 export const deleteOne = async (req, res) => {
   await productsService.deleteOne(req.params.productId);
   res.json({ status: "success" });
+};
+
+export const sortProducts = async (req, res) => {
+  logger.info(req.query);
+  const sortDirection = req.query.sortDirection === "desc" ? -1 : 1;
+  const sortedProducts = await productsService.sortProducts(
+    req.query.sortBy,
+    sortDirection
+  );
+  res.json({ status: "success", data: sortedProducts });
 };

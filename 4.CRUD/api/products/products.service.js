@@ -4,7 +4,10 @@ export const findById = async (id) => {
   return await Product.findById(id);
 };
 
-export const find = async () => {
+export const find = async (sortBy, direction) => {
+  if (sortBy) {
+    return await Product.find().sort({ [sortBy]: direction });
+  }
   return await Product.find();
 };
 

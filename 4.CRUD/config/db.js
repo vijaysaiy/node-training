@@ -1,14 +1,15 @@
 import * as dotenv from "dotenv";
 import mongoose from "mongoose";
+import { logger } from "../api/utils/logger/logger.js";
 
 dotenv.config();
 
 export const connectDB = () => {
-  console.log("Connecting to MongoDB");
+  logger.info("Connecting to MongoDB");
   try {
     mongoose.connect(process.env.MONGO_URI);
-    console.log("Connected to MongoDB");
+    logger.info("Connected to MongoDB");
   } catch (error) {
-    console.log("Failed to connect to MongoDB", error);
+    logger.info("Failed to connect to MongoDB", error);
   }
 };
