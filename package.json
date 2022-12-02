@@ -2,7 +2,7 @@
   "name": "node-training",
   "version": "1.0.0",
   "description": "",
-  "main": "4. CRUD/app.js",
+  "main": "4.CRUD/app.js",
   "type": "module",
   "scripts": {
     "dev": "nodemon",
