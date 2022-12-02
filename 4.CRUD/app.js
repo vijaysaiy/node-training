@@ -9,7 +9,7 @@ const main = async () => {
   app.use(express.json());
   app.use("/api/products", productRouter);
   app.listen(process.env.PORT || 4000, () =>
-    console.log("Server is up and running at Port 3000")
+    console.log(`Server is up and running at Port ${process.env.PORT || 4000}`)
   );
 };
 
