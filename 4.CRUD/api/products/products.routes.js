@@ -10,7 +10,7 @@ import {
 } from "./products.controller.js";
 import {
   getProductsValidator,
-  productValidator,
+  addProductValidator,
 } from "./products.requestValidators.js";
 
 export const productRouter = express.Router();
@@ -18,6 +18,6 @@ export const productRouter = express.Router();
 productRouter.get("/", getProductsValidator, find);
 productRouter.get("/:productId", findById);
 productRouter.get("/findByName/:productName", findByName);
-productRouter.post("/", productValidator, save);
+productRouter.post("/", addProductValidator, save);
 productRouter.delete("/:productId", deleteById);
 productRouter.delete("/delete/:productId", deleteOne);
