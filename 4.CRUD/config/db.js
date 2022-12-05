@@ -4,10 +4,10 @@ import { logger } from "../api/utils/logger/logger.js";
 
 dotenv.config();
 
-export const connectDB = () => {
+export const connectDB = async () => {
   logger.info("Connecting to MongoDB");
   try {
-    mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI);
     logger.info("Connected to MongoDB");
   } catch (error) {
     logger.info("Failed to connect to MongoDB", error);
