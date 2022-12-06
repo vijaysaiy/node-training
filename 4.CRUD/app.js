@@ -4,6 +4,7 @@ import { cartRouter } from "./api/cart/cart.routes.js";
 import { filesRouter } from "./api/files/files.routes.js";
 import { orderRouter } from "./api/order/order.routes.js";
 import { productRouter } from "./api/products/products.routes.js";
+import { userRouter } from "./api/user/user.routes.js";
 import { httpLogger } from "./api/utils/logger/httpLogger.js";
 import { logger } from "./api/utils/logger/logger.js";
 import { connectDB } from "./config/db.js";
@@ -18,7 +19,8 @@ const main = async () => {
   app.use("/api/products", productRouter);
   app.use("/api/cart", cartRouter);
   app.use("/api/orders", orderRouter);
-  app.use("/api/files",filesRouter);
+  app.use("/api/files", filesRouter);
+  app.use("/api/auth", userRouter);
 
   app.listen(process.env.PORT || 4000, () =>
     logger.info(`Server is up and running at Port ${process.env.PORT || 4000}`)
