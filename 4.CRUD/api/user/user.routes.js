@@ -1,11 +1,11 @@
 import express from "express";
-import { find, save } from "./user.controller.js";
+import { login, register } from "./user.controller.js";
 import {
-  findUserValidator,
-  saveUserValidator,
+  loginUserValidator,
+  registerUserValidator,
 } from "./user.requestValidator.js";
 
 export const userRouter = express.Router();
 
-userRouter.post("/register", saveUserValidator, save);
-userRouter.post("/login", findUserValidator, find);
+userRouter.post("/register", registerUserValidator, register);
+userRouter.post("/login", loginUserValidator, login);

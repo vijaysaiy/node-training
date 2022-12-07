@@ -10,3 +10,7 @@ export const save = async (cartItem) => {
 export const findByUserId = async (user) => {
   return await Cart.findOne({ user }).populate("cartItems.product");
 };
+
+export const clearCartByUserId = async (user) => {
+  return await Cart.deleteOne({ user });
+};
