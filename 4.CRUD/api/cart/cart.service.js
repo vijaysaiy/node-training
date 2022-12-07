@@ -1,7 +1,7 @@
 import { Cart } from "./cart.model.js";
 
-export const save = async (cartItem) => {
-  return await Cart.findOneAndUpdate({ user: cartItem.user }, cartItem, {
+export const save = async (cart, user) => {
+  return await Cart.findOneAndUpdate({ user }, cart, {
     upsert: true, // will just update if with same name is present other creates a new
     new: true,
   });

@@ -6,18 +6,20 @@ dotenv.config();
 
 export const authenticate = async (req, res, next) => {
   const authHeader = req.headers?.authorization;
+
   if (authHeader?.startsWith("Bearer ")) {
     const token = authHeader.substring(7, authHeader.length);
     const user = verifyToken(token);
+
     if (user) {
+      logger.warn(user);
       req.user = user;
       next();
-      return;
     }
-  }
-  res
-    .status(403)
-    .send({ status: "failure", message: "Please login to continue" });
+  } else
+    res
+      .status(403)
+      .send({ status: "failure", message: "Please login to continue" });
 };
 
 export const createToken = (payload) => {

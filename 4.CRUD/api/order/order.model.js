@@ -23,6 +23,7 @@ export const Order = mongoose.model(
           "cancelled",
           "shipped",
           "delivered",
+          "payment_pending",
         ],
         default: "pending_approval",
       },

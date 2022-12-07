@@ -1,7 +1,9 @@
 import express from "express";
-import { verifyToken } from "../utils/authenticate.js";
-import { createOrder } from "./order.controller.js";
+import { authenticate } from "../utils/authenticate.js";
+import { createOrder, find, findById } from "./order.controller.js";
 
 export const orderRouter = express.Router();
 
-orderRouter.post("/create/:user", verifyToken, createOrder);
+orderRouter.post("/create/", authenticate, createOrder);
+orderRouter.get("/getById/:orderId", authenticate, findById);
+orderRouter.get("/list", authenticate, find);
