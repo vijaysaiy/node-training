@@ -25,21 +25,30 @@ export const createOrder = async (user) => {
       ) * 100
     ) / 100;
 
-  const newOrder = new Order({ user, orderItems: cart.cartItems, totalAmount });
-  await newOrder.save();
-  await cartService.clearCartByUserId(user);
+  try {
+    const newOrder = new Order({
+      user,
+      orderItems: cart.cartItems,
+      totalAmount,
+    });
+    await newOrder.save();
+    await cartService.clearCartByUserId(user);
 
-  const paymentOrder = await createPaymentOrder(newOrder._id, totalAmount);
-  newOrder.status = "payment_pending";
-  newOrder.paymentOrderId = paymentOrder.id;
-  await newOrder.save();
+    const paymentOrder = await createPaymentOrder(newOrder._id, totalAmount);
+    newOrder.status = "payment_pending";
+    newOrder.paymentOrderId = paymentOrder.id;
+    await newOrder.save();
 
-  return {
-    orderId: newOrder._id,
-    totalAmount,
-    currency: "INR",
-    paymentOrderId: paymentOrder.id,
-  };
+    return {
+      orderId: newOrder._id,
+      totalAmount,
+      currency: "INR",
+      paymentOrderId: paymentOrder.id,
+    };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 export const paymentComplete = async (isValid, paymentOrderId, paymentId) => {

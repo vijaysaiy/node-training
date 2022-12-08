@@ -12,6 +12,10 @@ export const find = async (req, res) => {
 
 export const createOrder = async (req, res) => {
   const user = req.user._id;
-  const order = await orderServices.createOrder(user);
-  res.json({ status: "success", data: order });
+  try {
+    const order = await orderServices.createOrder(user);
+    res.json({ status: "success", data: order });
+  } catch (error) {
+    res.json({ status: "failed", message: error.message });
+  }
 };

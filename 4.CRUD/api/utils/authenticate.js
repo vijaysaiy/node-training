@@ -12,7 +12,6 @@ export const authenticate = async (req, res, next) => {
     const user = verifyToken(token);
 
     if (user) {
-      logger.warn(user);
       req.user = user;
       next();
     }

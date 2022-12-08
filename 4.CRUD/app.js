@@ -1,7 +1,9 @@
 import dotenv from "dotenv";
 import express from "express";
+import { bestSellingRouter } from "./api/BestSelling/bestSelling.routes.js";
 import { cartRouter } from "./api/cart/cart.routes.js";
 import { categoryRouter } from "./api/categories/category.routes.js";
+import { discoverRouter } from "./api/Discover/discover.routes.js";
 import { filesRouter } from "./api/files/files.routes.js";
 import { orderRouter } from "./api/order/order.routes.js";
 import { paymentRouter } from "./api/payments/payments.routes.js";
@@ -27,6 +29,8 @@ const main = async () => {
   app.use("/api/auth", userRouter);
   app.use("/api/payments", paymentRouter);
   app.use("/api/category", categoryRouter);
+  app.use("/api/discover", discoverRouter);
+  app.use("/api/bestSelling", bestSellingRouter);
 
   app.listen(process.env.PORT || 4000, () =>
     logger.info(`Server is up and running at Port ${process.env.PORT || 4000}`)
