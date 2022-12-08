@@ -3,4 +3,4 @@ import { getBestSelling } from "./bestSelling.controller.js";
 
 export const bestSellingRouter = express.Router();
 
-bestSellingRouter.get("/getBestFour", getBestSelling);
+bestSellingRouter.get("/getBestSelling", getBestSelling);
