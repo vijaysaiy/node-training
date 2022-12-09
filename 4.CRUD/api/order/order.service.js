@@ -1,6 +1,14 @@
+import { jsPDF } from "jspdf";
 import * as cartService from "../cart/cart.service.js";
 import { createPaymentOrder } from "../payments/payments.service.js";
 import { Order } from "./order.model.js";
+
+export const generatePDF = () => {
+  const doc = new jsPDF();
+  doc.setFontSize(24);
+  doc.text("Invoice", 15, 20);
+  return Buffer.from(doc.output("arraybuffer"));
+};
 
 export const findById = async (id) => {
   return await Order.findById(id).populate("orderItems.product");
@@ -8,6 +16,9 @@ export const findById = async (id) => {
 
 export const find = async () => {
   return await Order.find();
+};
+export const findOrders = async () => {
+  return await Order.find().select("orderItems -_id");
 };
 
 export const createOrder = async (user) => {

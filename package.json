@@ -20,6 +20,8 @@
     "express-joi-validation": "^5.0.1",
     "joi": "^17.7.0",
     "jsonwebtoken": "^8.5.1",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.28",
     "mongodb": "^4.12.1",
     "mongoose": "^6.7.3",
     "morgan": "^1.10.0",

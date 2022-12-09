@@ -19,3 +19,8 @@ export const createOrder = async (req, res) => {
     res.json({ status: "failed", message: error.message });
   }
 };
+
+export const generatePDF = async (req, res) => {
+  const pdf = orderServices.generatePDF();
+  res.send(pdf);
+};
