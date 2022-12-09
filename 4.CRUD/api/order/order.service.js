@@ -1,12 +1,31 @@
 import { jsPDF } from "jspdf";
+import jsAutoTable from "jspdf-autotable";
 import * as cartService from "../cart/cart.service.js";
 import { createPaymentOrder } from "../payments/payments.service.js";
 import { Order } from "./order.model.js";
 
-export const generatePDF = () => {
+export const generatePDF = async (id) => {
+  const autoTable = jsAutoTable.default;
+  const orderDetails = await Order.findOne({ id });
+  const orderItems = orderDetails.orderItems[0];
   const doc = new jsPDF();
   doc.setFontSize(24);
   doc.text("Invoice", 15, 20);
+  doc.setFontSize(18);
+  doc.text(`Order ID: ${orderDetails._id}`, 15, 40);
+  doc.setFontSize(16);
+  doc.text(`Total Amount: ${orderDetails.totalAmount}`, 15, 60);
+  console.log(typeof autoTable);
+  autoTable(doc, {
+    startY: 80,
+    head: [["Product", "Quantity", "Rate", "Amount"]],
+    body: orderDetails.orderItems.map((order) => [
+      order.product.name,
+      order.quantity,
+      parseFloat(order.product.price).toFixed(2),
+      parseFloat(order.quantity * order.product.price).toFixed(2),
+    ]),
+  });
   return Buffer.from(doc.output("arraybuffer"));
 };
 

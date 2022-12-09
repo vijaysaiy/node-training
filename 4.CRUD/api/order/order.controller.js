@@ -21,6 +21,7 @@ export const createOrder = async (req, res) => {
 };
 
 export const generatePDF = async (req, res) => {
-  const pdf = orderServices.generatePDF();
+  const pdf = await orderServices.generatePDF(req.params.id);
+  res.setHeader("Content-type", "application/pdf");
   res.send(pdf);
 };

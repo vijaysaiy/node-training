@@ -12,4 +12,4 @@ export const orderRouter = express.Router();
 orderRouter.post("/create/", authenticate, createOrder);
 orderRouter.get("/getById/:orderId", authenticate, findById);
 orderRouter.get("/list", authenticate, find);
-orderRouter.get("/generatePDF", generatePDF);
+orderRouter.get("/generatePDF/:id", generatePDF);
