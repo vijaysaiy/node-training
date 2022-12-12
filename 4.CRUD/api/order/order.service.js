@@ -1,19 +1,53 @@
 import { jsPDF } from "jspdf";
 import jsAutoTable from "jspdf-autotable";
+import XLSX from "xlsx-js-style";
 import * as cartService from "../cart/cart.service.js";
 import { createPaymentOrder } from "../payments/payments.service.js";
+import { logger } from "../utils/logger/logger.js";
 import { Order } from "./order.model.js";
+
+export const generaeInvoiceExcel = async (orderId) => {
+  logger.info("Generating Excel");
+  const order = await Order.findById(orderId);
+  const title = [
+    {
+      v: "Invoice",
+      t: "s",
+      s: {
+        font: { bold: true, sz: 24 },
+      },
+    },
+  ];
+  const header = ["Product", "Quantity", "Rate", "Amount"];
+  const rows = order.orderItems.map((order) => [
+    order.product.name,
+    order.quantity,
+    parseFloat(order.product.price).toFixed(2),
+    parseFloat(order.quantity * order.product.price).toFixed(2),
+  ]);
+
+  const data = [title, header, ...rows];
+  const workSheet = XLSX.utils.aoa_to_sheet(data);
+  const workBook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workBook, workSheet, "Sheet 1");
+  XLSX.writeFile(workBook, "tmp\\sample.xlsx");
+  return "tmp\\sample.xlsx";
+};
 
 export const generatePDF = async (id) => {
   const autoTable = jsAutoTable.default;
   const orderDetails = await Order.findOne({ _id: id });
-  const orderItems = orderDetails.orderItems[0];
+
   const doc = new jsPDF();
   doc.setFontSize(24);
   doc.text("Invoice", 15, 20);
   doc.setFontSize(18);
   doc.text(`Order ID: ${orderDetails._id}`, 15, 40);
   doc.setFontSize(16);
+  // doc.line(30, 30, 100, 30);
+
+  // doc.line(30, 30, 560, 30);
+
   doc.text(`Total Amount: ${orderDetails.totalAmount}`, 15, 60);
 
   autoTable(doc, {

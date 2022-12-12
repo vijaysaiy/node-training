@@ -4,6 +4,7 @@ import {
   createOrder,
   find,
   findById,
+  generaeInvoiceExcel,
   generatePDF,
 } from "./order.controller.js";
 
@@ -13,3 +14,4 @@ orderRouter.post("/create/", authenticate, createOrder);
 orderRouter.get("/getById/:orderId", authenticate, findById);
 orderRouter.get("/list", authenticate, find);
 orderRouter.get("/generatePDF/:id", generatePDF);
+orderRouter.get("/generateInvoiceExcel/:id", generaeInvoiceExcel);

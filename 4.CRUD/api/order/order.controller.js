@@ -25,3 +25,13 @@ export const generatePDF = async (req, res) => {
   res.setHeader("Content-type", "application/pdf");
   res.send(pdf);
 };
+
+export const generaeInvoiceExcel = async (req, res) => {
+  const orderId = req.params.id;
+  const file = await orderServices.generaeInvoiceExcel(orderId);
+  res.setHeader(
+    "Content-Disposition",
+    `attachment;filename="Invoice-${orderId}.xlsx`
+  );
+  res.sendFile(file, { root: "C:\\Users\\TR072\\node-training" });
+};
