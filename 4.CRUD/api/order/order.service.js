@@ -6,7 +6,7 @@ import { Order } from "./order.model.js";
 
 export const generatePDF = async (id) => {
   const autoTable = jsAutoTable.default;
-  const orderDetails = await Order.findOne({ id });
+  const orderDetails = await Order.findOne({ _id: id });
   const orderItems = orderDetails.orderItems[0];
   const doc = new jsPDF();
   doc.setFontSize(24);
@@ -15,7 +15,7 @@ export const generatePDF = async (id) => {
   doc.text(`Order ID: ${orderDetails._id}`, 15, 40);
   doc.setFontSize(16);
   doc.text(`Total Amount: ${orderDetails.totalAmount}`, 15, 60);
-  console.log(typeof autoTable);
+
   autoTable(doc, {
     startY: 80,
     head: [["Product", "Quantity", "Rate", "Amount"]],
