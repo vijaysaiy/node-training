@@ -1,5 +1,5 @@
 import express from "express";
-import { login, register } from "./user.controller.js";
+import { login, loginUsingSession, register } from "./user.controller.js";
 import {
   loginUserValidator,
   registerUserValidator,
@@ -9,3 +9,4 @@ export const userRouter = express.Router();
 
 userRouter.post("/register", registerUserValidator, register);
 userRouter.post("/login", loginUserValidator, login);
+userRouter.post("/loginUsingSession", loginUserValidator, loginUsingSession);

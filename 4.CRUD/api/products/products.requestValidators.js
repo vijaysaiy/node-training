@@ -1,7 +1,7 @@
 import joiValidator from "express-joi-validation";
 import joi from "joi";
 
-const validator = joiValidator.createValidator({});
+const validator = joiValidator.createValidator({ passError: true });
 
 export const addProductValidator = validator.body(
   joi.object({

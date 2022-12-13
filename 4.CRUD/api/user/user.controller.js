@@ -17,3 +17,21 @@ export const login = async (req, res) => {
     res.json({ status: "failed", message: error.message });
   }
 };
+
+export const loginUsingSession = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await userServices.loginUsingSession(email, password);
+
+  req.session.user = user;
+  res.send({ status: "success", data: user });
+};
+
+export const logoutUsingSession = async (req, res) => {
+  req.session.destroy(() => {
+    res.send({ status: "success" });
+  });
+};
+
+export const currentUser = async (req, res) => {
+  res.send({ status: "success", data: req.session.user });
+};

@@ -21,6 +21,19 @@ export const authenticate = async (req, res, next) => {
       .send({ status: "failure", message: "Please login to continue" });
 };
 
+export const authenticateUsingSession = async (req, res, next) => {
+  const user = req.session?.user;
+
+  if (user) {
+    req.user = user;
+    next();
+    return;
+  }
+  res
+    .status(403)
+    .send({ status: "failure", message: "Please login to continue" });
+};
+
 export const createToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,

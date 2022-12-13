@@ -33,3 +33,18 @@ export const login = async (userData) => {
     throw error;
   }
 };
+export const loginUsingSession = async (email, password) => {
+  try {
+    const user = await User.findOne({
+      email,
+    }).select("+password");
+    if (user && (await verifyPassword(user.password, password))) {
+      user.password = undefined;
+      return user;
+    } else {
+      throw new Error("User doesn't exists/ invalid credentials");
+    }
+  } catch (error) {
+    throw error;
+  }
+};

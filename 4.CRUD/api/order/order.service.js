@@ -1,3 +1,4 @@
+import fs from "fs";
 import { jsPDF } from "jspdf";
 import jsAutoTable from "jspdf-autotable";
 import XLSX from "xlsx-js-style";
@@ -38,7 +39,19 @@ export const generatePDF = async (id) => {
   const autoTable = jsAutoTable.default;
   const orderDetails = await Order.findOne({ _id: id });
 
+  const rowStyles = {
+    fillColor: [255, 255, 255],
+    textColor: [0, 0, 0],
+    lineWidth: 0.1,
+    lineColor: [0, 0, 0],
+  };
+  const logo = fs
+    .readFileSync(
+      "C:\\Users\\TR072\\node-training\\4.CRUD\\assets\\mandi_one_logo.jpeg"
+    )
+    .toString("base64");
   const doc = new jsPDF();
+  doc.addImage(logo, "JPEG", 150, 0, 50, 50);
   doc.setFontSize(24);
   doc.text("Invoice", 15, 20);
   doc.setFontSize(18);
@@ -51,9 +64,20 @@ export const generatePDF = async (id) => {
   doc.text(`Total Amount: ${orderDetails.totalAmount}`, 15, 60);
 
   autoTable(doc, {
+    theme: "plain",
+    headStyles: rowStyles,
+    bodyStyles: rowStyles,
     startY: 80,
-    head: [["Product", "Quantity", "Rate", "Amount"]],
+    head: [
+      [
+        { content: "ProductId and Name", colSpan: 2 },
+        "Quantity",
+        "Rate",
+        "Amount",
+      ],
+    ],
     body: orderDetails.orderItems.map((order) => [
+      order.product._id,
       order.product.name,
       order.quantity,
       parseFloat(order.product.price).toFixed(2),

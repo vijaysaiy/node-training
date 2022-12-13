@@ -1,3 +1,4 @@
+import { errorHandler } from "../utils/ErrorHandler/errorHandler.js";
 import { logger } from "../utils/logger/logger.js";
 import * as productsService from "./products.service.js";
 
@@ -6,10 +7,14 @@ export const findById = async (req, res) => {
   res.json({ status: "success", data: product });
 };
 
-export const find = async (req, res) => {
+export const find = async (req, res, next) => {
   const { sortBy, sortDirection = "asc" } = req.query;
-  const products = await productsService.find(sortBy, sortDirection);
-  res.json({ status: "success", data: products });
+  try {
+    const products = await productsService.findddddd(sortBy, sortDirection);
+    res.json({ status: "success", data: products });
+  } catch (error) {
+    errorHandler(error, req, res, next);
+  }
 };
 
 export const findByName = async (req, res) => {
@@ -41,4 +46,13 @@ export const sortProducts = async (req, res) => {
     sortDirection
   );
   res.json({ status: "success", data: sortedProducts });
+};
+
+export const saveFromExcel = async (req, res) => {
+  const data = await productsService.saveFromExcel(req.file.path);
+  res.json({
+    status: "success",
+    message: "All product added successfully",
+    data: data,
+  });
 };
