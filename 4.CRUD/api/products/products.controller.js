@@ -10,7 +10,7 @@ export const findById = async (req, res) => {
 export const find = async (req, res, next) => {
   const { sortBy, sortDirection = "asc" } = req.query;
   try {
-    const products = await productsService.findddddd(sortBy, sortDirection);
+    const products = await productsService.find(sortBy, sortDirection);
     res.json({ status: "success", data: products });
   } catch (error) {
     errorHandler(error, req, res, next);

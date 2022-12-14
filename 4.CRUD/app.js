@@ -9,16 +9,24 @@ import { filesRouter } from "./api/files/files.routes.js";
 import { orderRouter } from "./api/order/order.routes.js";
 import { paymentRouter } from "./api/payments/payments.routes.js";
 import { productRouter } from "./api/products/products.routes.js";
+import { productswithSQLRouter } from "./api/productsWithSQL/productsWithSQL.routes.js";
 import { userRouter } from "./api/user/user.routes.js";
 import { errorHandler } from "./api/utils/ErrorHandler/errorHandler.js";
 import { httpLogger } from "./api/utils/logger/httpLogger.js";
 import { logger } from "./api/utils/logger/logger.js";
 import { routeNotFoundHandler } from "./api/utils/RouteNotFoundHandler/routeNotFoundHandler.js";
-import { connectDB } from "./config/db.js";
+import { connectDB, connectSQL } from "./config/db.js";
+
 dotenv.config();
 
+const connectTODBS = async () => {
+  const mongo = connectDB();
+  const sql = connectSQL();
+  return Promise.all([mongo, sql]);
+};
+
 const main = async () => {
-  await connectDB();
+  await connectTODBS();
 
   const app = express();
   app.use(express.json());
@@ -54,6 +62,7 @@ const main = async () => {
   app.use("/api/category", categoryRouter);
   app.use("/api/discover", discoverRouter);
   app.use("/api/bestSelling", bestSellingRouter);
+  app.use("/api/sql/products", productswithSQLRouter);
 
   //ERROR HANDLING MIDDLEWARES
   app.use(routeNotFoundHandler);
