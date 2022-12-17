@@ -1,3 +1,4 @@
+import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
@@ -12,8 +13,10 @@ import { productRouter } from "./api/products/products.routes.js";
 import { productswithSQLRouter } from "./api/productsWithSQL/productsWithSQL.routes.js";
 import { userRouter } from "./api/user/user.routes.js";
 import { errorHandler } from "./api/utils/ErrorHandler/errorHandler.js";
+import { eventEmitter } from "./api/utils/eventEmiiter.js";
 import { httpLogger } from "./api/utils/logger/httpLogger.js";
 import { logger } from "./api/utils/logger/logger.js";
+import { connectRedis } from "./api/utils/redis.js";
 import { routeNotFoundHandler } from "./api/utils/RouteNotFoundHandler/routeNotFoundHandler.js";
 import { connectDB, connectSQL } from "./config/db.js";
 
@@ -22,7 +25,8 @@ dotenv.config();
 const connectTODBS = async () => {
   const mongo = connectDB();
   const sql = connectSQL();
-  return Promise.all([mongo, sql]);
+  const redisConnect = connectRedis();
+  return Promise.all([mongo, sql, redisConnect]);
 };
 
 const main = async () => {
@@ -30,6 +34,12 @@ const main = async () => {
 
   const app = express();
   app.use(express.json());
+
+  // cors
+  const corsOptions = {
+    origin: "https://www.google.com",
+  };
+  app.use(cors(corsOptions));
 
   // FOR RAZOR PAY PAYMENTS
   app.use(express.urlencoded({ extended: true }));
@@ -67,6 +77,10 @@ const main = async () => {
   //ERROR HANDLING MIDDLEWARES
   app.use(routeNotFoundHandler);
   app.use(errorHandler);
+
+  eventEmitter.on("productsFetched", (message) =>
+    logger.warn("event emitted " + message)
+  );
 
   app.listen(process.env.PORT || 4000, () =>
     logger.info(`Server is up and running at Port ${process.env.PORT || 4000}`)

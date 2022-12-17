@@ -20,5 +20,5 @@ export const findById = async (id) => {
 };
 
 export const findByName = async (name) => {
-  return await Product.findOne({ where: { name: { [Op.like]: `${name}%` } } });
+  return await Product.findAll({ where: { name: { [Op.like]: `${name}%` } } });
 };

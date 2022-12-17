@@ -1,4 +1,7 @@
+import events from "events";
 import * as orderServices from "./order.service.js";
+
+const eventEmitter = new events();
 
 export const findById = async (req, res) => {
   const order = await orderServices.findById(req.params.orderId);
@@ -15,6 +18,7 @@ export const createOrder = async (req, res) => {
   try {
     const order = await orderServices.createOrder(user);
     res.json({ status: "success", data: order });
+    eventEmitter.emit("orderCreated",order);
   } catch (error) {
     res.json({ status: "failed", message: error.message });
   }

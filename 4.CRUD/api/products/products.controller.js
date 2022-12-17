@@ -1,4 +1,5 @@
 import { errorHandler } from "../utils/ErrorHandler/errorHandler.js";
+import { eventEmitter } from "../utils/eventEmiiter.js";
 import { logger } from "../utils/logger/logger.js";
 import * as productsService from "./products.service.js";
 
@@ -8,10 +9,12 @@ export const findById = async (req, res) => {
 };
 
 export const find = async (req, res, next) => {
+  // res.redirect("https://mail.google.com");
   const { sortBy, sortDirection = "asc" } = req.query;
   try {
     const products = await productsService.find(sortBy, sortDirection);
     res.json({ status: "success", data: products });
+    eventEmitter.emit("productsFetched", products[0].name);
   } catch (error) {
     errorHandler(error, req, res, next);
   }
